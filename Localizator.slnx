@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/ApiKey/">
+    <Project Path="Localizator.ApiKey/Localizator.ApiKey.Application/Localizator.ApiKey.Application.csproj" />
+    <Project Path="Localizator.ApiKey/Localizator.ApiKey.Domain/Localizator.ApiKey.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Audit/">
+    <Project Path="Localizator.Audit/Localizator.Audit.Application/Localizator.Audit.Application.csproj" />
+    <Project Path="Localizator.Audit/Localizator.Audit.Domain/Localizator.Audit.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Auth/">
+    <Project Path="Localizator.Auth/Localizator.Auth.Application/Localizator.Auth.Application.csproj" />
+    <Project Path="Localizator.Auth/Localizator.Auth.Domain/Localizator.Auth.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Namespace/">
+    <Project Path="Localizator.Namespace/Localizator.Namespace.Application/Localizator.Namespace.Application.csproj" />
+    <Project Path="Localizator.Namespace/Localizator.Namespace.Domain/Localizator.Namespace.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Shared/">
+    <Project Path="Localizator.Shared/Localizator.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Translation/">
+    <Project Path="Localizator.Translation/Localizator.Translation.Application/Localizator.Translation.Application.csproj" />
+    <Project Path="Localizator.Translation/Localizator.Translation.Domain/Localizator.Translation.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Modules/User/">
+    <Project Path="Localizator.User/Localizator.User.Application/Localizator.User.Application.csproj" />
+    <Project Path="Localizator.User/Localizator.User.Domain/Localizator.User.Domain.csproj" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="Localizator.API/Localizator.API.csproj" />
+  <Project Path="Localizator.Infrastructure/Localizator.Infrastructure.csproj" />
+</Solution>

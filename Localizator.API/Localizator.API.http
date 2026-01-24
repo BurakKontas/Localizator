@@ -1,0 +1,6 @@
+@Localizator.API_HostAddress = http://localhost:5128
+
+GET {{Localizator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
