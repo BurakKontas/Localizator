@@ -1,8 +1,10 @@
-﻿using Localizator.Auth.Domain.Configuration.Mode;
-using Localizator.Auth.Domain.Identity;
+﻿using Localizator.Auth.Domain.Identity;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Localizator.Auth.Infrastructure.Strategies.Abstract;
+using Localizator.Shared.Resources;
+using Localizator.Shared.Result;
+using Localizator.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -20,13 +22,13 @@ public sealed class LocalAuthStrategy(
     private readonly SignInManager<LocalizatorIdentityUser> _signInManager = signInManager;
     private readonly UserManager<LocalizatorIdentityUser> _userManager = userManager;
 
-    public override async Task<bool> AuthenticateAsync(HttpContext context, CancellationToken ct = default)
+    public override async Task<Result<bool>> AuthenticateAsync(HttpContext context, CancellationToken ct = default)
     {
         if (!context.Request.Headers.TryGetValue("Authorization", out var authHeader))
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.Headers.TryAdd("WWW-Authenticate", "Basic realm=\"Localizator\"");
-            return false;
+            return Result<bool>.Failure(Messages.AuthorizationHeaderNotFound);
         }
 
         var headerValue = authHeader.ToString();
@@ -34,7 +36,7 @@ public sealed class LocalAuthStrategy(
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.Headers.TryAdd("WWW-Authenticate", "Basic realm=\"Localizator\"");
-            return false;
+            return Result<bool>.Failure(Messages.BasicAuthorizationHeaderInvalidFormat);
         }
 
         // Decode Base64 credentials
@@ -48,14 +50,14 @@ public sealed class LocalAuthStrategy(
         catch
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return false;
+            return Result<bool>.Failure(Messages.Base64ConversionError);
         }
 
         var parts = decoded.Split(':', 2);
         if (parts.Length != 2)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return false;
+            return Result<bool>.Failure();
         }
 
         var (username, password) = (parts[0], parts[1]);
@@ -65,7 +67,7 @@ public sealed class LocalAuthStrategy(
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.Headers.TryAdd("WWW-Authenticate", "Basic realm=\"Localizator\"");
-            return false;
+            return Result<bool>.Failure(Messages.BasicCredentialsDontMatch);
         }
 
         // Identity user creation/check
@@ -76,15 +78,17 @@ public sealed class LocalAuthStrategy(
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
-                _logger.LogError("Failed to create identity user: {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
+                string message = Messages.FailedToCreateIdentityUser.Format(string.Join(", ", result.Errors.Select(e => e.Description)));
+
+                _logger.LogError(message);
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                return false;
+                return Result<bool>.Failure(message);
             }
         }
 
         // Sign in with Identity (creates session/cookie)
         await _signInManager.SignInAsync(user, isPersistent: false);
 
-        return true;
+        return Result<bool>.Success(true);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Localizator.Auth.Domain.Configuration.Mode;
+using Localizator.Shared.Result;
 using Microsoft.AspNetCore.Http;
 
 namespace Localizator.Auth.Domain.Interfaces.Strategy;
@@ -6,5 +7,5 @@ namespace Localizator.Auth.Domain.Interfaces.Strategy;
 public interface IAuthStrategy
 {
     AuthMode Mode { get; }
-    Task<bool> AuthenticateAsync(HttpContext context, CancellationToken ct = default);
+    Task<Result<bool>> AuthenticateAsync(HttpContext context, CancellationToken ct = default);
 }

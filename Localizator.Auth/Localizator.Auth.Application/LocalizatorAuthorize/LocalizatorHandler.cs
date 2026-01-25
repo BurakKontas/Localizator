@@ -1,7 +1,11 @@
 ﻿using Localizator.Auth.Domain.Configuration.Mode;
 using Localizator.Auth.Domain.Interfaces.Strategy;
+using Localizator.Shared.Resources;
+using Localizator.Shared.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Localizator.Auth.Application.LocalizatorAuthorize;
 
@@ -13,19 +17,22 @@ public sealed class LocalizatorHandler(IAuthStrategy authStrategy) : Authorizati
     {
         if (context.Resource is HttpContext httpContext)
         {
-            bool isSuccess = await _authStrategy.AuthenticateAsync(httpContext);
+            Result<bool> result = await _authStrategy.AuthenticateAsync(httpContext);
             
-            if(isSuccess)
+            if(result.IsSuccess)
             {
                 context.Succeed(requirement);
-            } 
+            }
             else
             {
-                context.Fail();
+                string reason = result.Message ?? "Authentication failed";
+                httpContext.Items.TryAdd("AuthResult", result);
+                context.Fail(new AuthorizationFailureReason(this, reason));
             }
-            return;
         }
-
-        context.Fail();
+        else
+        {
+            context.Fail(new AuthorizationFailureReason(this, Messages.ContextResourceIsNotHttpContext));
+        }
     }
 }

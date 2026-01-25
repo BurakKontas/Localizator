@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Localizator.API/Dockerfile
     env_file:
-      - ./envs/none.env
+      - ./envs/local.env
     networks:
       - localizator-net
 

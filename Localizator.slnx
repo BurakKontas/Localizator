@@ -28,6 +28,7 @@
     <Project Path="Localizator.User/Localizator.User.Application/Localizator.User.Application.csproj" />
     <Project Path="Localizator.User/Localizator.User.Domain/Localizator.User.Domain.csproj" />
   </Folder>
+  <Folder Name="/Resources/" />
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

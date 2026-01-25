@@ -1,17 +1,18 @@
-﻿using Localizator.Auth.Application;
-using Localizator.Auth.Application.Interfaces.Validators;
-using Localizator.Auth.Domain.Interfaces.Strategy;
+﻿using Localizator.API.Extensions;
+using Localizator.API.Middlewares;
+using Localizator.Auth.Application;
 using Localizator.Auth.Infrastructure;
-using Localizator.Auth.Infrastructure.Persistence;
+using Localizator.Shared.Config;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+AppConfig.Initialize(builder.Configuration);
+
+// Add Localization services
+builder.Services.AddLocalization(options => options.ResourcesPath = "Localizator.Shared/Resources");
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddAuthInfrastructure(builder.Configuration);
@@ -19,17 +20,13 @@ builder.Services.AddAuthApplication();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-    dbContext.Database.Migrate();
+app.AddLocalization();
 
-    var optionsFactory = scope.ServiceProvider.GetRequiredService<IAuthOptionsProvider>();
-    var validator = scope.ServiceProvider.GetRequiredService<IAuthOptionsValidatorResolver>();
+app.UseMiddleware<RequestTimingMiddleware>();
+app.UseMiddleware<MetaMiddleware>();
+app.UseMiddleware<AuthorizationResponseMiddleware>();
 
-    var options = optionsFactory.Get();
-    validator.Validate(options);
-}
+await app.Migrate();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
