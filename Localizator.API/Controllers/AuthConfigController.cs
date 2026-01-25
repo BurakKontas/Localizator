@@ -22,6 +22,7 @@ public sealed class AuthConfigController(IAuthOptions options, IAuthStrategy aut
         {
             { "_options.mode", _options.Mode.GetDisplayName() },
             { "_authStrategy.mode", _authStrategy.Mode.GetDisplayName() },
+            { "_user.name", User.Identity?.Name ?? "anonymous" }
         });
     }
 }

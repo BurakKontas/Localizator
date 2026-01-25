@@ -96,44 +96,11 @@ public sealed class OidcAuthStrategy(
                 await _signInManager.SignOutAsync();
             }
 
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                user = new LocalizatorIdentityUser(username, Options.Mode);
-                var result = await _userManager.CreateAsync(user);
-                if (!result.Succeeded)
-                {
-                    string message = Errors.FailedToCreateIdentityUser.Format(string.Join(", ", result.Errors.Select(e => e.Description)));
-
-                    _logger.LogError(message);
-                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                    return Result<bool>.Failure(message);
-                }
-            }
-
-            // Sign in with Identity (creates session/cookie)
-            var principal = await _signInManager.CreateUserPrincipalAsync(user);
-
-            // auth mode claim
-            principal.Identities.First().AddClaim(
-                new Claim("auth_mode", Options.Mode.ToString())
-            );
-
-            // opsiyonel ama anlamlı
-            principal.Identities.First().AddClaim(
-                new Claim(ClaimTypes.AuthenticationMethod, "local")
-            );
-
-            await context.SignInAsync(
-                IdentityConstants.ApplicationScheme,
-                principal,
-                new AuthenticationProperties
-                {
-                    IsPersistent = false
-                }
-            );
-
-            return Result<bool>.Success(true);
+            return await SignInUserAsync(
+                context,
+                _signInManager,
+                _userManager,
+                username);
         }
         catch (SecurityTokenException ex)
         {
