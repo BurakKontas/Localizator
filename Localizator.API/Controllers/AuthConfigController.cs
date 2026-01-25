@@ -1,3 +1,4 @@
+using Localizator.Auth.Application.LocalizatorAuthorize;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ public sealed class AuthConfigController(IAuthOptions options, IAuthStrategy aut
     private readonly IAuthStrategy _authStrategy = authStrategy;
 
     [HttpGet("config")]
+    [LocalizatorAuthorize]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         await _authStrategy.AuthenticateAsync(HttpContext, cancellationToken);

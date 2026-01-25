@@ -1,4 +1,4 @@
-﻿using Localizator.Auth.Domain.Configuration;
+﻿using Localizator.Auth.Domain.Configuration.Mode;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +25,7 @@ public sealed class AuthStrategyProvider(IAuthOptionsProvider optionsProvider, I
             AuthMode.Header => _sp.GetRequiredService<HeaderAuthStrategy>(),
             AuthMode.ApiKey => _sp.GetRequiredService<ApiKeyAuthStrategy>(),
             AuthMode.Hybrid => _sp.GetRequiredService<HybridAuthStrategy>(),
+            AuthMode.None => _sp.GetRequiredService<NoneAuthStrategy>(),
             _ => throw new NotSupportedException()
         };
 

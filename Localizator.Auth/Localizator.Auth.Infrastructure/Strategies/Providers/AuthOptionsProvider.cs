@@ -26,6 +26,7 @@ public sealed class AuthOptionsProvider(IConfiguration config) : IAuthOptionsPro
             "header" => BindAndValidate<HeaderAuthOptions>("HEADER"),
             "apikey" => BindAndValidate<ApiKeyAuthOptions>("API_KEY"),
             "hybrid" => BindAndValidate<HybridAuthOptions>("HYBRID"),
+            "none" => BindAndValidate<NoneAuthOptions>("NONE"),
             _ => throw new AuthConfigurationException($"Unsupported AUTH_MODE: {mode}")
         };
 
@@ -35,6 +36,12 @@ public sealed class AuthOptionsProvider(IConfiguration config) : IAuthOptionsPro
     private T BindAndValidate<T>(string section)
         where T : IAuthOptions
     {
+        if(section == "NONE") 
+        {
+            // For NONE auth mode, we return a default instance without binding
+            return Activator.CreateInstance<T>();
+        }  
+
         return _config.GetSection(section).Get<T>() ?? throw new AuthConfigurationException($"{section} auth config is missing");
     }
 }

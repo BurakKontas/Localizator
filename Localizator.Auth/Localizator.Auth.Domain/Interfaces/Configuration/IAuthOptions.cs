@@ -1,4 +1,4 @@
-﻿using Localizator.Auth.Domain.Configuration;
+﻿using Localizator.Auth.Domain.Configuration.Mode;
 
 namespace Localizator.Auth.Domain.Interfaces.Configuration;
 

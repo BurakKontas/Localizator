@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Localizator.API/Dockerfile
     env_file:
-      - ./envs/local.env
+      - ./envs/none.env
     networks:
       - localizator-net
 
@@ -18,7 +18,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     networks:
       - localizator-net
 

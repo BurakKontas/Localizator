@@ -1,4 +1,4 @@
-﻿using Localizator.Auth.Domain.Configuration;
+﻿using Localizator.Auth.Domain.Configuration.Mode;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Localizator.Auth.Infrastructure.Strategies.Abstract;
@@ -9,10 +9,9 @@ namespace Localizator.Auth.Infrastructure.Strategies;
 
 public sealed class HybridAuthStrategy(IAuthOptionsProvider provider, ILogger<HybridAuthStrategy> logger) : AuthStrategyBase<IHybridAuthOptions>(provider)
 {
-    public override AuthMode Mode => AuthMode.Hybrid;
     private readonly ILogger<HybridAuthStrategy> _logger = logger;
 
-    public override async Task AuthenticateAsync(HttpContext context, CancellationToken ct = default)
+    public override async Task<bool> AuthenticateAsync(HttpContext context, CancellationToken ct = default)
     {
         // TODO:
         // if API key present → apiKey
@@ -21,6 +20,6 @@ public sealed class HybridAuthStrategy(IAuthOptionsProvider provider, ILogger<Hy
         _logger.LogInformation("Hybrid authentication strategy invoked.");
         _logger.LogInformation(Options.ToString());
 
-        await Task.CompletedTask;
+        return true;
     }
 }

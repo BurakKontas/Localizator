@@ -1,4 +1,4 @@
-﻿using Localizator.Auth.Domain.Configuration;
+﻿using Localizator.Auth.Domain.Configuration.Mode;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Localizator.Auth.Infrastructure.Strategies.Abstract;
@@ -9,10 +9,9 @@ namespace Localizator.Auth.Infrastructure.Strategies;
 
 public sealed class OidcAuthStrategy(IAuthOptionsProvider provider, ILogger<OidcAuthStrategy> logger) : AuthStrategyBase<IOidcAuthOptions>(provider)
 {
-    public override AuthMode Mode => AuthMode.Oidc;
     private readonly ILogger<OidcAuthStrategy> _logger = logger;
 
-    public override Task AuthenticateAsync(HttpContext context, CancellationToken ct = default)
+    public override async Task<bool> AuthenticateAsync(HttpContext context, CancellationToken ct = default)
     {
         // TODO:
         // - challenge redirect
@@ -22,6 +21,6 @@ public sealed class OidcAuthStrategy(IAuthOptionsProvider provider, ILogger<Oidc
         _logger.LogInformation("OIDC authentication strategy invoked.");
         _logger.LogInformation(Options.ToString());
 
-        return Task.CompletedTask;
+        return true;
     }
 }

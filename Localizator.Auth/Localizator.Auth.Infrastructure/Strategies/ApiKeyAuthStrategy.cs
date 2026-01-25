@@ -1,4 +1,4 @@
-﻿using Localizator.Auth.Domain.Configuration;
+﻿using Localizator.Auth.Domain.Configuration.Mode;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Localizator.Auth.Infrastructure.Strategies.Abstract;
@@ -9,10 +9,9 @@ namespace Localizator.Auth.Infrastructure.Strategies;
 
 public sealed class ApiKeyAuthStrategy(IAuthOptionsProvider provider, ILogger<ApiKeyAuthStrategy> logger) : AuthStrategyBase<IApiKeyAuthOptions>(provider)
 {
-    public override AuthMode Mode => AuthMode.ApiKey;
     private readonly ILogger<ApiKeyAuthStrategy> _logger = logger;
 
-    public override Task AuthenticateAsync(HttpContext context, CancellationToken ct = default)
+    public override async Task<bool> AuthenticateAsync(HttpContext context, CancellationToken ct = default)
     {
         // TODO:
         // - read API key from header
@@ -21,6 +20,6 @@ public sealed class ApiKeyAuthStrategy(IAuthOptionsProvider provider, ILogger<Ap
         _logger.LogInformation("ApiKey authentication strategy invoked.");
         _logger.LogInformation(Options.ToString());
 
-        return Task.CompletedTask;
+        return true;
     }
 }
