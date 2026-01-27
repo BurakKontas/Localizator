@@ -38,7 +38,7 @@ public sealed class HybridAuthStrategy(
 
             Result<bool> apiKeyResult = await apiKeyStrategy.AuthenticateAsync(context, ct);
 
-            if(apiKeyResult.IsSuccess && apiKeyResult.Data)
+            if(apiKeyResult.IsSuccess)
             {
                 return Result<bool>.Success();
             }
@@ -53,7 +53,7 @@ public sealed class HybridAuthStrategy(
 
             Result<bool> oidcResult = await oidcStrategy.AuthenticateAsync(context, ct);
 
-            if(oidcResult.IsSuccess && oidcResult.Data)
+            if(oidcResult.IsSuccess)
             {
                 return Result<bool>.Success();
             }

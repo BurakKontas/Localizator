@@ -26,7 +26,7 @@ public sealed class NoneAuthStrategy(
 
         Result<bool> isLoggedIn = CheckIfUserLoggedIn(_signInManager, context, username);
 
-        if (isLoggedIn.IsSuccess && isLoggedIn.Data)
+        if (isLoggedIn.IsSuccess)
         {
             return Result<bool>.Success(true);
         }
