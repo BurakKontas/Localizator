@@ -84,7 +84,6 @@ public sealed class LocalAuthStrategy(
             context,
             _signInManager,
             _userManager,
-            username,
-            password);
+            username);
     }
 }
