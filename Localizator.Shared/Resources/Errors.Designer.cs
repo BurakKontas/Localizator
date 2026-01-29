@@ -61,11 +61,29 @@ namespace Localizator.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured..
+        /// </summary>
+        public static string AnErrorOccured {
+            get {
+                return ResourceManager.GetString("AnErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authorization header not found.
         /// </summary>
         public static string AuthorizationHeaderNotFound {
             get {
                 return ResourceManager.GetString("AuthorizationHeaderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad gateway error occurred..
+        /// </summary>
+        public static string BadGateway {
+            get {
+                return ResourceManager.GetString("BadGateway", resourceCulture);
             }
         }
         
@@ -124,11 +142,29 @@ namespace Localizator.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have permission to access this resource..
+        /// </summary>
+        public static string Forbidden {
+            get {
+                return ResourceManager.GetString("Forbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Handler method not found for {0}.
         /// </summary>
         public static string HandlerMethodNotFound {
             get {
                 return ResourceManager.GetString("HandlerMethodNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An internal server error occurred..
+        /// </summary>
+        public static string InternalServerError {
+            get {
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
             }
         }
         
@@ -151,6 +187,15 @@ namespace Localizator.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The request is invalid..
+        /// </summary>
+        public static string InvalidRequest {
+            get {
+                return ResourceManager.GetString("InvalidRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NameIdentifier claim missing.
         /// </summary>
         public static string NameIdentifierClaimMissing {
@@ -160,11 +205,56 @@ namespace Localizator.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This functionality is not implemented..
+        /// </summary>
+        public static string NotImplemented {
+            get {
+                return ResourceManager.GetString("NotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request was cancelled by the client..
+        /// </summary>
+        public static string RequestCancelled {
+            get {
+                return ResourceManager.GetString("RequestCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request timed out..
+        /// </summary>
+        public static string RequestTimeout {
+            get {
+                return ResourceManager.GetString("RequestTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found in environment ({0}).
         /// </summary>
         public static string ResourceNotFound {
             get {
                 return ResourceManager.GetString("ResourceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to perform this action..
+        /// </summary>
+        public static string Unauthorized {
+            get {
+                return ResourceManager.GetString("Unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One or more validation errors occurred..
+        /// </summary>
+        public static string ValidationFailed {
+            get {
+                return ResourceManager.GetString("ValidationFailed", resourceCulture);
             }
         }
     }

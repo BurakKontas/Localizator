@@ -1,36 +1,20 @@
 ﻿namespace Localizator.Shared.Exceptions;
 
-public class BusinessException : Exception
+public sealed class BusinessException : BaseException
 {
-    public string Code { get; }
+    protected override string Title => "Business Error";
 
     public BusinessException(string message)
-        : base(message)
+        : this("NoErrorCode", message)
     {
-        Code = "NoErrorCode";
     }
 
-    public BusinessException(string code, string message)
-        : base(message)
+    public BusinessException(
+        string code,
+        string message,
+        int statusCode = 400,
+        Exception? innerException = null)
+        : base(code, message, statusCode, innerException)
     {
-        Code = code;
-    }
-
-    public BusinessException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-        Code = innerException.Source ?? "NoErrorCode";
-    }
-
-    public BusinessException(string code, string message, Exception innerException)
-        : base(message, innerException)
-    {
-        Code = code;
-    }
-
-    public BusinessException(string message, BusinessException innerException)
-    : base(message, innerException)
-    {
-        Code = innerException.Code;
     }
 }

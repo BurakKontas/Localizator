@@ -29,7 +29,6 @@
     <Project Path="Localizator.User/Localizator.User.Domain/Localizator.User.Domain.csproj" Id="092c1ce9-d279-4f03-bbfe-a1ace1c93064" />
     <Project Path="Localizator.User/Localizator.User.Infrastructure/Localizator.User.Infrastructure.csproj" Id="2c2451f7-3a50-4973-b0a5-5c5b28c79ef8" />
   </Folder>
-  <Folder Name="/Resources/" />
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

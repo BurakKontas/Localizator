@@ -1,4 +1,5 @@
 ﻿using Localizator.Shared.Providers;
+using Soenneker.Dtos.ProblemDetails;
 
 namespace Localizator.Shared.Result;
 
@@ -15,12 +16,13 @@ public class Result<T>() : Result
             Meta = meta ?? MetaProvider.Get()
         };
 
-    public static Result<T> Failure(string message = "", T? data = default, Meta? meta = null)
+    public static Result<T> Failure(string message = "", T? data = default, Meta? meta = null, ProblemDetailsDto? problemDetails = null)
         => new Result<T>
         {
             IsSuccess = false,
             Message = message,
             Data = data,
-            Meta = meta ?? MetaProvider.Get()
+            Meta = meta ?? MetaProvider.Get(),
+            ProblemDetails = problemDetails
         };
 }

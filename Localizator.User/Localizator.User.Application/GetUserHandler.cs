@@ -6,6 +6,8 @@ public class GetUserHandler : IRequestHandler<CreateUserCommand, UserCreatedResp
 {
     public async Task<UserCreatedResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        throw new TimeoutException();
+
         return new UserCreatedResponse()
         {
             Email = request.Email,

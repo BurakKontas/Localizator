@@ -165,4 +165,35 @@
     <value>Handler method not found for {0}</value>
     <comment>Message shown when handler of a request not found.</comment>
   </data>
+  <data name="AnErrorOccured" xml:space="preserve">
+    <value>An error occured.</value>
+    <comment>Message shown when a error occured without a custom message.</comment>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>An internal server error occurred.</value>
+  </data>
+  <data name="InvalidRequest" xml:space="preserve">
+    <value>The request is invalid.</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>One or more validation errors occurred.</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>You are not authorized to perform this action.</value>
+  </data>
+  <data name="Forbidden" xml:space="preserve">
+    <value>You do not have permission to access this resource.</value>
+  </data>
+  <data name="RequestTimeout" xml:space="preserve">
+    <value>The request timed out.</value>
+  </data>
+  <data name="RequestCancelled" xml:space="preserve">
+    <value>The request was cancelled by the client.</value>
+  </data>
+  <data name="NotImplemented" xml:space="preserve">
+    <value>This functionality is not implemented.</value>
+  </data>
+  <data name="BadGateway" xml:space="preserve">
+    <value>Bad gateway error occurred.</value>
+  </data>
 </root>

@@ -34,7 +34,7 @@ public sealed class AuthConfigController(IAuthOptions options, IAuthStrategy aut
     [LocalizatorAuthorize]
     public async Task<IActionResult> GetTest([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send<Result<UserCreatedResponse>>(request, cancellationToken);
+        var response = await _mediator.Send<UserCreatedResponse>(request, cancellationToken);
         return Ok(response);
     }
 }

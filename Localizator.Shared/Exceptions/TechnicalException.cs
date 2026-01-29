@@ -1,36 +1,14 @@
 ﻿namespace Localizator.Shared.Exceptions;
 
-public class TechnicalException : Exception
+public sealed class TechnicalException : BaseException
 {
-    public string Code { get; }
+    protected override string Title => "Technical Error";
 
-    public TechnicalException(string message)
-        : base(message)
+    public TechnicalException(
+        string message,
+        string code = "TechnicalError",
+        Exception? innerException = null)
+        : base(code, message, 500, innerException)
     {
-        Code = "NoErrorCode";
-    }
-
-    public TechnicalException(string code, string message)
-        : base(message)
-    {
-        Code = code;
-    }
-
-    public TechnicalException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-        Code = innerException.Source ?? "NoErrorCode";
-    }
-
-    public TechnicalException(string code, string message, Exception innerException)
-        : base(message, innerException)
-    {
-        Code = code;
-    }
-
-    public TechnicalException(string message, TechnicalException innerException)
-        : base(message, innerException)
-    {
-        Code = innerException.Code;
     }
 }
