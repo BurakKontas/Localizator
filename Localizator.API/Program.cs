@@ -15,7 +15,6 @@ AppConfig.Initialize(builder.Configuration);
 // Add Localization services
 builder.Services.AddLocalization(options => options.ResourcesPath = "Localizator.Shared/Resources");
 
-builder.Services.AddMeta();
 builder.Services.AddMediator();
 builder.Services.RegisterMediatorBehaviors(typeof(Program).Assembly);
 
@@ -32,12 +31,13 @@ var app = builder.Build();
 
 app.AddLocalization();
 
-app.UseMiddleware<RequestTimingMiddleware>();
+app.UseMiddleware<ResultWrapperMiddleware>();
 app.UseMiddleware<MetaMiddleware>();
+app.UseMiddleware<RequestTimingMiddleware>();
 app.UseMiddleware<AuthorizationResponseMiddleware>();
 
 await app.Migrate();
-
+ 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

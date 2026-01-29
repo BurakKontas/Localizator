@@ -8,6 +8,7 @@ public class Meta
     public string RequestId { get; set; } = Guid.NewGuid().ToString();
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     public string Version { get; set; } = AppConfig.ApiVersion;
+    public string Duration { get; set; } = "00:00:00.000 000";
     public Pagination? Pagination { get; set; } = Pagination.Empty();
     public RateLimit? RateLimit { get; set; } = RateLimit.Empty();
 
