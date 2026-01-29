@@ -1,29 +1,72 @@
 ﻿using Localizator.Shared.Result;
+using Microsoft.AspNetCore.Http;
 
 namespace Localizator.Shared.Providers;
 
 public static class MetaProvider
 {
-    private static readonly AsyncLocal<Meta?> _metaHolder = new();
+    private const string MetaKey = "Meta_Request_Context";
+    private static readonly AsyncLocal<HttpContext?> _httpContextHolder = new();
+
+    public static void SetContext(HttpContext context)
+    {
+        _httpContextHolder.Value = context;
+    }
 
     public static void Set(Meta meta)
     {
         if (meta != null)
-            _metaHolder.Value = meta;
+        {
+            var context = _httpContextHolder.Value;
+            if (context != null)
+            {
+                context.Items[MetaKey] = meta;
+            }
+        }
     }
 
     public static Meta Get()
     {
-        _metaHolder.Value ??= Meta.Auto();
-        return _metaHolder.Value;
+        var context = _httpContextHolder.Value;
+        if (context != null && context.Items.TryGetValue(MetaKey, out var meta))
+        {
+            return (Meta)meta!;
+        }
+
+        var newMeta = Meta.Auto();
+        Set(newMeta);
+        return newMeta;
     }
 
-    public static void Clear() => _metaHolder.Value = null;
-
-    public static Meta Initialize()
+    public static Meta GetFromContext(HttpContext context)
     {
+        if (context != null && context.Items.TryGetValue(MetaKey, out var meta))
+        {
+            return (Meta)meta!;
+        }
+
+        var newMeta = Meta.Auto();
+        if (context != null)
+        {
+            context.Items[MetaKey] = newMeta;
+        }
+        return newMeta;
+    }
+
+    public static void Clear()
+    {
+        var context = _httpContextHolder.Value;
+        if (context != null)
+        {
+            context.Items.Remove(MetaKey);
+        }
+    }
+
+    public static Meta Initialize(HttpContext context)
+    {
+        SetContext(context);
         var meta = Meta.Auto();
-        _metaHolder.Value = meta;
+        Set(meta);
         return meta;
     }
 }

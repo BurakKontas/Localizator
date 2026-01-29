@@ -2,7 +2,7 @@
 
 namespace Localizator.Shared.Result;
 
-public class Result<T> : Result
+public class Result<T>() : Result
 {
     public new T? Data { get; set; }
 

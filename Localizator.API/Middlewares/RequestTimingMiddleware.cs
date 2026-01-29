@@ -12,13 +12,19 @@ public class RequestTimingMiddleware(RequestDelegate next)
     {
         var stopwatch = Stopwatch.StartNew();
 
-        context.Response.OnStarting(() =>
-        {
-            stopwatch.Stop();
-            context.Response.Headers["X-Response-Time-ms"] = stopwatch.ElapsedMilliseconds.ToString();
-            return Task.CompletedTask;
-        });
+        Meta meta = MetaProvider.Get();
 
         await _next(context);
+
+        stopwatch.Stop();
+
+        TimeSpan ts = stopwatch.Elapsed;
+
+        int ms = ts.Milliseconds;
+        int us = (int)(ts.Ticks % TimeSpan.TicksPerMillisecond / 10);
+
+        string result = $"{ts:hh\\:mm\\:ss}.{ms:000} {us:000}";
+
+        meta.Duration = result;
     }
 }

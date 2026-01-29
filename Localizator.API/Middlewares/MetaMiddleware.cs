@@ -11,7 +11,7 @@ public class MetaMiddleware(RequestDelegate next)
     public async Task InvokeAsync(HttpContext context)
     {
         // initialize meta to ensure requestId is set
-        MetaProvider.Initialize();
+        Meta meta = MetaProvider.Initialize(context);
 
         await _next(context);
     }

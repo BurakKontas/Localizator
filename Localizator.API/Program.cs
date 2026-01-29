@@ -3,10 +3,7 @@ using Localizator.API.Middlewares;
 using Localizator.Auth.Application;
 using Localizator.Auth.Infrastructure;
 using Localizator.Shared.Config;
-using Localizator.Shared.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Wolverine.Http;
-using Wolverine.Http.Transport;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +22,13 @@ var app = builder.Build();
 
 app.AddLocalization();
 
-app.UseMiddleware<RequestTimingMiddleware>();
+app.UseMiddleware<ResultWrapperMiddleware>();
 app.UseMiddleware<MetaMiddleware>();
+app.UseMiddleware<RequestTimingMiddleware>();
 app.UseMiddleware<AuthorizationResponseMiddleware>();
 
 await app.Migrate();
-
+ 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
