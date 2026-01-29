@@ -161,4 +161,8 @@
     <value>Resource not found in environment ({0})</value>
     <comment>Message shown when a resource not found in environment.</comment>
   </data>
+  <data name="HandlerMethodNotFound" xml:space="preserve">
+    <value>Handler method not found for {0}</value>
+    <comment>Message shown when handler of a request not found.</comment>
+  </data>
 </root>

@@ -150,4 +150,7 @@
   <data name="ResourceNotFound" xml:space="preserve">
     <value>Çevre değişkeni bulunamadı ({0})</value>
   </data>
+  <data name="HandlerMethodNotFound" xml:space="preserve">
+    <value>{0} için Handler metodu bulunamadı</value>
+  </data>
 </root>

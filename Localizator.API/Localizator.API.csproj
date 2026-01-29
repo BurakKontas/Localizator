@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Localizator.Auth\Localizator.Auth.Application\Localizator.Auth.Application.csproj" />
     <ProjectReference Include="..\Localizator.Auth\Localizator.Auth.Infrastructure\Localizator.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\Localizator.User\Localizator.User.Application\Localizator.User.Application.csproj" />
   </ItemGroup>
 
 </Project>

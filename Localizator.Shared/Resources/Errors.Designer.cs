@@ -124,6 +124,15 @@ namespace Localizator.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handler method not found for {0}.
+        /// </summary>
+        public static string HandlerMethodNotFound {
+            get {
+                return ResourceManager.GetString("HandlerMethodNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid credential format.
         /// </summary>
         public static string InvalidCredentialFormat {
