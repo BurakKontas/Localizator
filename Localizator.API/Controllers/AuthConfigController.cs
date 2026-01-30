@@ -2,8 +2,6 @@ using Localizator.Auth.Application.LocalizatorAuthorize;
 using Localizator.Auth.Domain.Interfaces.Configuration;
 using Localizator.Auth.Domain.Interfaces.Strategy;
 using Localizator.Shared.Mediator.Interfaces;
-using Localizator.Shared.Result;
-using Localizator.User.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi;
 
@@ -28,13 +26,5 @@ public sealed class AuthConfigController(IAuthOptions options, IAuthStrategy aut
             { "_authStrategy.mode", _authStrategy.Mode.GetDisplayName() },
             { "_user.name", User.Identity?.Name ?? "anonymous" }
         });
-    }
-
-    [HttpPost("test")]
-    [LocalizatorAuthorize]
-    public async Task<IActionResult> GetTest([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
-    {
-        var response = await _mediator.Send<UserCreatedResponse>(request, cancellationToken);
-        return Ok(response);
     }
 }

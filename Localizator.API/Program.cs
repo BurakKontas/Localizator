@@ -4,9 +4,7 @@ using Localizator.Auth.Application;
 using Localizator.Auth.Infrastructure;
 using Localizator.Shared.Config;
 using Localizator.Shared.Extensions;
-using Localizator.User.Application;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +23,6 @@ builder.Services.AddAuthInfrastructure(builder.Configuration);
 builder.Services.AddAuthApplication();
 
 // builder.Services.AddUserInfrastructure(builder.Configuration);
-builder.Services.AddUserApplication();
-
 var app = builder.Build();
 
 app.AddLocalization();
