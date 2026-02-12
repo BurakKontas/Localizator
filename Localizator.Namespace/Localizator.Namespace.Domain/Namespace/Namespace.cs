@@ -1,4 +1,5 @@
 ﻿using Localizator.Namespace.Domain.Namespace.Enums;
+using Localizator.Namespace.Domain.Namespace.Events;
 using Localizator.Namespace.Domain.Namespace.ValueObjects;
 using Localizator.Shared.Base;
 using Localizator.Shared.Exceptions;
@@ -8,10 +9,8 @@ namespace Localizator.Namespace.Domain.Namespace;
 
 public class Namespace : BaseEntity
 {
-    private readonly List<NamespaceUserPermission> _permissions = new();
+    private readonly List<NamespaceUserPermission> _permissions = [];
 
-
-    // Private setters - encapsulation
     public NamespaceName Name { get; private set; }
     public NamespaceSlug Slug { get; private set; }
     public List<SupportedLanguage> SupportedLanguages { get; private set; }
@@ -23,12 +22,11 @@ public class Namespace : BaseEntity
     public bool IsPublic { get; private set; }
 
 
-    // EF Core için parameterless constructor
+    // EF Core
     private Namespace()
     {
     }
 
-    // Private constructor - sadece factory method'lar kullanılmalı
     private Namespace(string createdBy, NamespaceName name, NamespaceSlug slug, List<SupportedLanguage> supportedLanguages, bool isPublic) : base()
     {
         Name = name;
@@ -45,8 +43,7 @@ public class Namespace : BaseEntity
             )
         );
 
-        // Domain Event
-        //Arise(new NamespaceCreatedDomainEvent(id, name, slug));
+        Arise(new NamespaceCreatedDomainEvent(Id, name!, slug!));
     }
 
     public static Namespace Create(string createdBy, NamespaceName name, NamespaceSlug slug, List<SupportedLanguage> supportedLanguages, bool isPublic = false)
@@ -67,7 +64,7 @@ public class Namespace : BaseEntity
             return;
 
         Name = newName;
-        //Arise(new NamespaceNameUpdatedDomainEvent(Id, newName));
+        Arise(new NamespaceNameUpdatedDomainEvent(Id, newName!));
     }
 
     public void UpdateSlug(NamespaceSlug newSlug)
@@ -90,7 +87,7 @@ public class Namespace : BaseEntity
         LastPublishedAt = PublishedAt.Now();
         LastPublishedBy = publisher;
 
-        //Arise(new NamespacePublishedDomainEvent(Id, publisher, LastPublishedAt));
+        Arise(new NamespacePublishedDomainEvent(Id, publisher!, LastPublishedAt.Value));
     }
 
     public void Unpublish()
@@ -102,7 +99,7 @@ public class Namespace : BaseEntity
             throw new BusinessException(Errors.CannotUnpublishArchivedNamespace);
 
         Status = NamespaceStatus.Draft;
-        //Arise(new NamespaceUnpublishedDomainEvent(Id));
+        Arise(new NamespaceUnpublishedDomainEvent(Id));
     }
 
     public void Archive()
@@ -111,7 +108,7 @@ public class Namespace : BaseEntity
             throw new BusinessException(Errors.NamespaceAlreadyArchived);
 
         Status = NamespaceStatus.Archived;
-        //Arise(new NamespaceArchivedDomainEvent(Id));
+        Arise(new NamespaceArchivedDomainEvent(Id));
     }
 
     public void Restore()
@@ -120,7 +117,7 @@ public class Namespace : BaseEntity
             throw new BusinessException(Errors.OnlyArchivedCanBeRestored);
 
         Status = NamespaceStatus.Draft;
-        //Arise(new NamespaceRestoredDomainEvent(Id));
+        Arise(new NamespaceRestoredDomainEvent(Id));
     }
 
     public void AddLanguage(string languageCode)
@@ -131,11 +128,11 @@ public class Namespace : BaseEntity
         if (SupportedLanguages.Any(lang => lang.Value == languageCode))
             return;
 
-        SupportedLanguage newLang = new SupportedLanguage(languageCode.ToLowerInvariant());
+        SupportedLanguage newLang = new(languageCode.ToLowerInvariant());
 
         SupportedLanguages.Add(newLang);
 
-        //Arise(new LanguageAddedDomainEvent(Id, languageCode));
+        Arise(new LanguageAddedDomainEvent(Id, languageCode));
     }
 
     public void RemoveLanguage(string languageCode)
@@ -149,9 +146,9 @@ public class Namespace : BaseEntity
         if (SupportedLanguages.Count == 1)
             throw new BusinessException(Errors.NamespaceMustSupportOneLanguage);
 
-        SupportedLanguages.RemoveAll(lang => lang.Value != languageCode.ToLowerInvariant());
+        SupportedLanguages.RemoveAll(lang => !lang.Value.Equals(languageCode, StringComparison.InvariantCultureIgnoreCase));
 
-        //Arise(new LanguageRemovedDomainEvent(Id, languageCode));
+        Arise(new LanguageRemovedDomainEvent(Id, languageCode));
     }
 
     public void AddPermission(string user, string permission)
@@ -166,7 +163,7 @@ public class Namespace : BaseEntity
         if (userPermissions is null)
         {
             _permissions.Add(
-                new NamespaceUserPermission(user, new[] { newPermission })
+                new NamespaceUserPermission(user, [newPermission])
             );
             return;
         }
@@ -206,7 +203,7 @@ public class Namespace : BaseEntity
             return;
 
         IsPublic = true;
-        //Arise(new NamespaceMadePublicDomainEvent(Id));
+        Arise(new NamespaceMadePublicDomainEvent(Id));
     }
 
     public void MakePrivate()
@@ -215,7 +212,7 @@ public class Namespace : BaseEntity
             return;
 
         IsPublic = false;
-        //Arise(new NamespaceMadePrivateDomainEvent(Id));
+        Arise(new NamespaceMadePrivateDomainEvent(Id));
     }
 
     public void BumpVersion(VersionBumpType bumpType)
@@ -224,7 +221,7 @@ public class Namespace : BaseEntity
             throw new BusinessException(Errors.CannotModifyArchivedNamespace);
 
         CurrentVersion = CurrentVersion.Bump(bumpType);
-        //Arise(new NamespaceVersionBumpedDomainEvent(Id, CurrentVersion, bumpType));
+        Arise(new NamespaceVersionBumpedDomainEvent(Id, CurrentVersion!, bumpType));
     }
 
     // Query Methods
